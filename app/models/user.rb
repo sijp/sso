@@ -6,7 +6,10 @@ class User < SafeCredentialsRecord
       name: self.name,
       email: self.email,
       iat: DateTime.now.getutc.to_i,
-      iss: "MyAwesomeSSO",
+      iss: "http://localhost:3000",
+      sub: self.email,
+      aud: "all",
+      exp: 15.minutes.from_now.to_i,
     }
   end
 
@@ -15,7 +18,11 @@ class User < SafeCredentialsRecord
   end
 
   def self.find_by_session_token(token)
-    claims = TokenHelper::decode_token(token)
-    User.find_by_email(claims[:email])
+    begin
+      claims = TokenHelper::decode_token(token)
+    rescue Exception
+      return nil
+    end
+    User.find_by_email(claims["email"])
   end
 end

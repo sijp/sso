@@ -8,8 +8,12 @@ class Client < SafeCredentialsRecord
     self.url_whitelists.map(&:url).include?(uri)
   end
 
+  def payload
+    { aud: self.client_id }
+  end
+
   def create_openid_tokens(user)
-    id_token = TokenHelper::create_token user.payload
+    id_token = TokenHelper::create_token user.payload.merge(self.payload)
 
     {
       access_token: "-",

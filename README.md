@@ -1,24 +1,60 @@
-# README
+# Ruby on Rails implementation of Simplified OpenID Server
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## RoR server
 
-Things you may want to cover:
+I am using rvm 1.29.10, ruby 2.7.0p0 and Rails 6.0.3.2
+Run:
 
-* Ruby version
+```bash
+bundle install
+rake db:seed
+```
 
-* System dependencies
+you will need to generate RSA key pairs and store them in rails credentials
 
-* Configuration
+```bash
+EDITOR=vim rails credentials:edit
+```
 
-* Database creation
+and add two keys: `private_key` and `public_key`
 
-* Database initialization
+which will hold the string values. You can easily generate key pairs using Ruby:
 
-* How to run the test suite
+```ruby
+key = OpenSSL::PKey::RSA.new 2048
+puts key.to_s # private key
+puts key.public_key.to_s # public key
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+Now you can run the server:
 
-* Deployment instructions
+```bash
+rails s
+```
 
-* ...
+To run tests run:
+
+```
+rails test
+```
+
+## NodeJS Client
+
+go to the directory `openid-client-node` and then:
+
+```
+npm install
+node index.js
+```
+
+you need node 10 installed.
+
+## Test the flow:
+
+got to http://localhost:5000
+This will redirect you to the sso server (http://localhost:3000) which will authenticate you and will redirect you back to the client which will display your email.
+
+### The seeded user is:
+
+email: shlomi@email.com
+password: 123456

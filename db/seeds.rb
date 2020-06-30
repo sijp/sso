@@ -5,3 +5,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+User.delete_all
+Client.delete_all
+UrlWhitelist.delete_all
+
+User.create(name: "Shlomi", email: "shlomi@email.com", password: "123456")
+client = Client.create(name: "sso-client", client_id: "q1w2e3", client_secret: "abcd1234")
+UrlWhitelist.create(url: "http://localhost:5000", client: client)

@@ -8,12 +8,11 @@ class OpenidControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "/authorize will set cookies with params" do
-    get "/authorize?p1=1&p2=2"
+    get "/authorize?response_type=1&client_id=2"
 
     login_info = JSON.parse cookies[:login_info]
-
-    assert login_info["p1"], "1"
-    assert login_info["p2"], "2"
+    assert login_info["response_type"], "1"
+    assert login_info["client_id"], "2"
   end
 
   test "/authorize will redirect to redirect_uri if cookies have good token" do
